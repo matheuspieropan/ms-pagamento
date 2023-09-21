@@ -28,11 +28,16 @@ public class SQSAcoes {
     }
 
     @SqsListener("pedido-realizado-queue")
-    public void consumer(Object obj) throws JsonProcessingException {
+    public void consumer(Object obj) throws JsonProcessingException, InterruptedException {
         Pedido pedido = objectMapper.readValue(obj.toString(), Pedido.class);
-        pedido.setStatus(StatusPedidoEnum.getEnum(new Random().nextInt(2) + 1));
+        processarPagamento(pedido);
 
         notificar(pedido);
+    }
+
+    void processarPagamento(Pedido pedido) throws InterruptedException {
+        Thread.sleep(10000L);
+        pedido.setStatus(StatusPedidoEnum.getEnum(new Random().nextInt(2) + 1));
     }
 
     void notificar(Pedido pedido) throws JsonProcessingException {
