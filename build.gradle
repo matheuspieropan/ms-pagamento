@@ -20,6 +20,8 @@ dependencies {
     implementation group: 'org.springframework.kafka', name: 'spring-kafka', version: '3.0.10'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.15.0'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws-messaging', version: '2.2.3.RELEASE'
+    implementation 'org.springframework:spring-messaging:5.3.24'
 }
 
 tasks.named('test') {
