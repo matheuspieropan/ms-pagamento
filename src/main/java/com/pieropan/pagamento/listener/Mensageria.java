@@ -30,7 +30,7 @@ public abstract class Mensageria {
     PagamentoEntity criarPagamento(PedidoEntity pedido) {
         return PagamentoEntity
                 .builder()
-                .status(StatusPagamentoEnum.APROVADO)
+                .status(StatusPagamentoEnum.getRandomStatus())
                 .pedido(pedido).build();
     }
 }
