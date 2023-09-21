@@ -1,6 +1,7 @@
 package com.pieropan.pagamento.config;
 
-import com.pieropan.pagamento.entities.Pedido;
+
+import com.pieropan.pagamento.entities.PedidoEntity;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -11,12 +12,7 @@ import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
-import org.springframework.kafka.core.ConsumerFactory;
-import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-import org.springframework.kafka.core.DefaultKafkaProducerFactory;
-import org.springframework.kafka.core.KafkaAdmin;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.core.*;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
@@ -45,15 +41,15 @@ public class KafkaConfig {
 
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, Pedido> pedidoListenerFactory() {
-        var configs = new ConcurrentKafkaListenerContainerFactory<String, Pedido>();
+    public ConcurrentKafkaListenerContainerFactory<String, PedidoEntity> pedidoListenerFactory() {
+        var configs = new ConcurrentKafkaListenerContainerFactory<String, PedidoEntity>();
         configs.setConsumerFactory(consumerFactory());
 
         return configs;
     }
 
-    ConsumerFactory<String, Pedido> consumerFactory() {
-        JsonDeserializer<Pedido> deserializer = new JsonDeserializer<>(Pedido.class);
+    ConsumerFactory<String, PedidoEntity> consumerFactory() {
+        JsonDeserializer<PedidoEntity> deserializer = new JsonDeserializer<>(PedidoEntity.class);
         deserializer.setRemoveTypeHeaders(false);
         deserializer.addTrustedPackages("*");
         deserializer.setUseTypeMapperForKey(true);
@@ -77,6 +73,6 @@ public class KafkaConfig {
 
     @Bean
     public NewTopic criarTopic() {
-        return new NewTopic("pedido-pagamento-topic", 2, Short.valueOf("1"));
+        return new NewTopic("pedido-pagamento-topic", 2, Short.parseShort("1"));
     }
 }
