@@ -16,8 +16,10 @@ public abstract class Mensageria {
     @Autowired
     PedidoRepository pedidoRepository;
 
-    protected void processarPagamento(PedidoEntity pedido) throws InterruptedException {
-        Thread.sleep(5000L);
+    protected void processarPagamento(PedidoEntity pedido) {
+        boolean pagamentoJaProcessado = pagamentoRepository.existsByPedidoId(pedido.getId());
+        if (pagamentoJaProcessado) return;
+
         pagamentoRepository.save(criarPagamento(pedido));
         atualizarPedido(pedido);
     }
@@ -27,10 +29,7 @@ public abstract class Mensageria {
         pedidoRepository.save(pedido);
     }
 
-    PagamentoEntity criarPagamento(PedidoEntity pedido) {
-        return PagamentoEntity
-                .builder()
-                .status(StatusPagamentoEnum.getRandomStatus())
-                .pedido(pedido).build();
+    private PagamentoEntity criarPagamento(PedidoEntity pedido) {
+        return PagamentoEntity.builder().status(StatusPagamentoEnum.getRandomStatus()).pedido(pedido).build();
     }
 }
