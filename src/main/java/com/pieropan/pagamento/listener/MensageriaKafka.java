@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class MensageriaKafka extends Mensageria {
 
     @KafkaListener(topics = "pedido-realizado-topic", groupId = "pedido_id", containerFactory = "pedidoListenerFactory")
-    public synchronized void consumer(PedidoEntity pedidoEntity) throws InterruptedException {
+    public void consumer(PedidoEntity pedidoEntity) {
         processarPagamento(pedidoEntity);
     }
 }

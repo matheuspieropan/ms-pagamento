@@ -16,7 +16,7 @@ public abstract class Mensageria {
     @Autowired
     PedidoRepository pedidoRepository;
 
-    protected void processarPagamento(PedidoEntity pedido) {
+    protected synchronized void processarPagamento(PedidoEntity pedido) {
         boolean pagamentoJaProcessado = pagamentoRepository.existsByPedidoId(pedido.getId());
         if (pagamentoJaProcessado) return;
 

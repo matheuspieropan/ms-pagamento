@@ -16,7 +16,7 @@ public class MensageriaSQS extends Mensageria {
     }
 
     @SqsListener("pedido-realizado-queue")
-    public synchronized void consumer(Object obj) throws JsonProcessingException, InterruptedException {
+    public void consumer(Object obj) throws JsonProcessingException {
         PedidoEntity pedidoEntity = objectMapper.readValue(obj.toString(), PedidoEntity.class);
         processarPagamento(pedidoEntity);
     }
